@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="Service Controller" Language="2052" Version="$(var.SVCCTL_VERSION)" Manufacturer="Service Controller" UpgradeCode="DBDB8AA7-EE15-4360-A52F-99928FBA9D12" Codepage="936">
+
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes"/>
+
+    <Binary Id="actions.dll" SourceFile=".\\build\\actions.dll" />
+
+		<Feature Id="ProductFeature" Title="Service Controller" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <Property Id="DISABLEADVTSHORTCUTS" Value="yes" />
+    <Property Id="LicenseAccepted" Value="1" />
+
+    <UI>
+      <UIRef Id="WixUI_InstallDir" />
+      <ProgressText Action="StartCtlServices">正在启动服务</ProgressText>
+      <ProgressText Action="KillProcesses">正在结束进程</ProgressText>
+      <ProgressText Action="EvaluateCtlServices">正在停止服务</ProgressText>
+    </UI>
+
+    <WixVariable Id="WixUILicenseRtf" Value="LICENSE.rtf" />
+    <CustomAction Id="StartCtlServices" BinaryKey="actions.dll" DllEntry="StartCtlServices" />
+        <InstallExecuteSequence>
+          <Custom Action="StartCtlServices" After="InstallFinalize">NOT Installed</Custom>
+        </InstallExecuteSequence>
+
+        <CustomAction Id="EvaluateCtlServices" BinaryKey="actions.dll" DllEntry="EvaluateCtlServices" />
+        <InstallExecuteSequence>
+          <Custom Action="EvaluateCtlServices" After="InstallInitialize">REMOVE="ALL"</Custom>
+        </InstallExecuteSequence>
+
+        <CustomAction Id="KillProcesses" BinaryKey="actions.dll" DllEntry="KillProcesses" />
+        <InstallExecuteSequence>
+          <Custom Action="KillProcesses" Before="InstallInitialize">REMOVE="ALL"</Custom>
+        </InstallExecuteSequence>
+  </Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="Service Controller" />
+			</Directory>
+      <Directory Id="ProgramMenuFolder">
+      </Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Guid="{5E369341-4051-4BD3-AB1A-ED7D7B21F784}" Id="MainApplication">
+        <File Id="MainApplication" Source="..\\bin\\svcctl.exe" KeyPath="yes">
+        </File>
+        <ServiceControl Id="DummyService.721AC108_A84C_44FC_ADBD_3295ED294C7D" Name="DummyService.721AC108_A84C_44FC_ADBD_3295ED294C7D" />
+      </Component>
+		</ComponentGroup>
+	</Fragment>
+
+  <Fragment>
+    <SetProperty Id="ARPINSTALLLOCATION" Value="[INSTALLFOLDER]" After="CostFinalize" />
+  </Fragment>
+</Wix>

@@ -59,9 +59,8 @@ func InstallService(address string, token string) error {
 		return err
 	}
 
-	err = service.Start()
 	service.Close()
-	return err
+	return nil
 }
 
 func UninstallService() error {

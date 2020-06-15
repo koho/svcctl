@@ -10,7 +10,7 @@ import (
 
 const (
 	defaultAddress = ":9001"
-	ver            = "1.0.0"
+	ver            = "1.0.1"
 )
 
 var (

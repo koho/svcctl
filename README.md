@@ -46,6 +46,14 @@ Description:
 - `timeout`: Operation timeout(in seconds).
 
 ## Server
+
+### Build
+```
+build.cmd
+```
+Binary files are located in `bin`.
+
+### Usage
 ```
 Usage of svcctl.exe:
   -address string
