@@ -11,6 +11,14 @@ Method: GET
 Headers:
 - Authorization: {token}
 
+ContentType: JSON
+
+Response:
+- `code`: Status code. If no errors occurred, it should be zero. Otherwise, it's a nonzero value.
+- `msg`: Message about calling result.
+- `name`: Name of the service.
+- `status`: The Service status(bool). It's `true` when the service is running.
+
 Description:
 - `name`: Service name.
 - `token`: API token for authorization.
@@ -22,6 +30,14 @@ Method: GET
 
 Headers:
 - Authorization: {token}
+
+ContentType: JSON
+
+Response:
+- `code`: Status code. If no errors occurred, it should be zero. Otherwise, it's a nonzero value.
+- `msg`: Message about calling result.
+- `name`: Name of the service.
+- `action`: The control action of the service.
 
 Description:
 - `name`: Service name.
