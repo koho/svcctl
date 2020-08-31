@@ -45,6 +45,33 @@ Description:
 - `token`: API token for authorization.
 - `timeout`: Operation timeout(in seconds).
 
+### File
+URL: /file?path=
+
+Method: GET/POST
+
+Headers:
+- Authorization: {token}
+
+Query:
+- `path`: Download/Upload file path.
+
+Form:
+
+GET: -
+
+POST: 
+
+`file`: Upload file
+
+Response:
+- GET: application/octet-stream
+- POST: JSON
+
+Description:
+- `path`: Download/Upload file path.
+- `token`: API token for authorization.
+
 ## Server
 
 ### Build

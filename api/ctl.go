@@ -74,5 +74,7 @@ func ServeAPI(address string, token string) {
 	r.Use(TokenAuthMiddleware(token))
 	r.GET("/query/:name", query)
 	r.GET("/ctl/:name/:action", control)
+	r.GET("/file", readFile)
+	r.POST("/file", writeFile)
 	r.Run(address)
 }
