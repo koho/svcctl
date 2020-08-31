@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<Product Id="*" Name="Service Controller" Language="2052" Version="$(var.SVCCTL_VERSION)" Manufacturer="Service Controller" UpgradeCode="DBDB8AA7-EE15-4360-A52F-99928FBA9D12" Codepage="936">
 
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+		<Package InstallerVersion="400" Compressed="yes" InstallScope="perMachine" Platform="x64" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes"/>
@@ -39,11 +39,17 @@
         <InstallExecuteSequence>
           <Custom Action="KillProcesses" Before="InstallInitialize">REMOVE="ALL"</Custom>
         </InstallExecuteSequence>
+        <DirectoryRef Id="TARGETDIR">
+                <Merge Id="VCRedist" SourceFile="Microsoft_VC141_CRT_x64.msm" DiskId="1" Language="0"/>
+        </DirectoryRef>
+        <Feature Id="VCRedist" Title="Visual C++ 14.1 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
+                <MergeRef Id="VCRedist"/>
+        </Feature>
   </Product>
 
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="ProgramFilesFolder">
+			<Directory Id="ProgramFiles64Folder">
 				<Directory Id="INSTALLFOLDER" Name="Service Controller" />
 			</Directory>
       <Directory Id="ProgramMenuFolder">
@@ -53,7 +59,7 @@
 
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-      <Component Guid="{5E369341-4051-4BD3-AB1A-ED7D7B21F784}" Id="MainApplication">
+      <Component Guid="{5E369341-4051-4BD3-AB1A-ED7D7B21F784}" Id="MainApplication" Win64="yes">
         <File Id="MainApplication" Source="..\\bin\\svcctl.exe" KeyPath="yes">
         </File>
         <ServiceControl Id="DummyService.721AC108_A84C_44FC_ADBD_3295ED294C7D" Name="DummyService.721AC108_A84C_44FC_ADBD_3295ED294C7D" />
